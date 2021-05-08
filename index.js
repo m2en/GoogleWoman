@@ -20,7 +20,7 @@ bot.on('message', async (message) => {
     if(message.content === `${prefix}help`) {
         await message.channel.send([
             '```asciidoc',
-            '= GoogleWoman Help - Ver1.0.2=',
+            '= GoogleWoman Help - Ver1.0.2 =',
             'g:help :: これです。',
             'g:gururu :: 『Googleの正しい発音』を再生します。',
             'g:mura :: 『『バイオハザード　ヴィレッジ』公式イメージソング「俺らこんな村いやだLv.100」』を再生します。長いので飽きたら切断してください。',
@@ -37,6 +37,8 @@ bot.on('message', async (message) => {
                 .setTitle('このBOTのリポジトリ / Github')
                 .setDescription('このBotのリポジトリを読むと彼女ができる！？')
                 .setURL('https://github.com/Meru92/GoogleWoman')
+                .addField('Release Notes', `[ここ](https://github.com/Meru92/GoogleWoman/releases/tag/v1.0.2)`, true)
+                .addField('change Logs', `[ここ](https://github.com/Meru92/GoogleWoman/blob/main/changelogs/v1.0.2.md)`, true)
         )
     } else if(message.content.startsWith(`${prefix}gururu`) && message.guild) {
         const channel = message.member.voice.channel
