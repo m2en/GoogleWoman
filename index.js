@@ -11,7 +11,7 @@ bot.login(token)
 
 bot.on('ready', () => {
     console.log(`${bot.user.username}を起動しました。`)
-    bot.user.setActivity("Googleの正しい発音", { type: 'LISTENING' })
+    bot.user.setActivity("Googleの正しい発音 - v1.0.2", { type: 'LISTENING' })
         .catch(console.error)
 })
 
@@ -20,7 +20,7 @@ bot.on('message', async (message) => {
     if(message.content === `${prefix}help`) {
         await message.channel.send([
             '```asciidoc',
-            '= GoogleWoman Help =',
+            '= GoogleWoman Help - Ver1.0.2=',
             'g:help :: これです。',
             'g:gururu :: 『Googleの正しい発音』を再生します。',
             'g:mura :: 『『バイオハザード　ヴィレッジ』公式イメージソング「俺らこんな村いやだLv.100」』を再生します。長いので飽きたら切断してください。',
@@ -45,7 +45,6 @@ bot.on('message', async (message) => {
         const connection = await channel.join()
         const stream = ytdl(ytdl.getURLVideoID('https://www.youtube.com/watch?v=QL2Wg3b6g8I'), { filter: 'audioonly' })
         const dispatcher = connection.play(stream)
-        message.reply()
         dispatcher.once('finish', () => {
             channel.leave()
             message.reply('再生しました。ぐるる！ <:gururu:840642008305500191>')
