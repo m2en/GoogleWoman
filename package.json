@@ -1,6 +1,6 @@
 {
   "name": "googlewoman",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "『Googleの正しい発音』の女性がいつでも聞けるDiscord Bot",
   "main": "index.js",
   "scripts": {
