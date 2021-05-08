@@ -7,12 +7,12 @@ Discord で [『Googleの正しい発音
 - このBotは [限界開発鯖](https://approvers.dev/) でのみ使えます。
 1. VCへ参加します。
 > BOTが参加できるVCのみ再生できます。
-2. `g:<再生したい音楽のid>` を送信します。
+2. `g:<再生したい音楽のid>` を送信します。idは限界開発鯖内で `g:help` を実行するか、 [Document/id.md](https://github.com/Meru92/GoogleWoman/blob/main/Document/id.md) から参照。
 3. Done.
 <details><summary>Usage(一般向け)</summary><div>
 
 - ダウンロードせずに [index.js](https://github.com/Meru92/GoogleWoman/blob/main/index.js) を見てコピペプログラミングすることをおすすめします。
-1. 適当なところにファイルを作成します。
+1. [Release](https://github.com/Meru92/GoogleWoman/releases) から `index.js` をダウンロード。適当なところにファイルを作成しブチ込みます。
 2. ファイルに移動します。
 ```
 $ cd <pass>
