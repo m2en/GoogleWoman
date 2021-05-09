@@ -14,7 +14,7 @@ bot.login(token)
 
 bot.on('ready', () => {
     console.log(`${bot.user.username}を起動しました。`)
-    bot.user.setActivity("Googleの正しい発音 - v1.0.2", { type: 'LISTENING' })
+    bot.user.setActivity("Googleの正しい発音 - v1.0.3", { type: 'LISTENING' })
         .catch(console.error)
 })
 
@@ -23,7 +23,7 @@ bot.on('message', async (message) => {
     if(message.content === `${prefix}help`) {
         await message.channel.send([
             '```asciidoc',
-            '= GoogleWoman Help - Ver1.0.2 =',
+            '= GoogleWoman Help - Ver1.0.3 =',
             '',
             '【💿再生】',
             'g:help :: これです。',
@@ -33,14 +33,13 @@ bot.on('message', async (message) => {
             'g:ten :: この点は出ねぇヨォオｵｵｵ！！！',
             '',
             '【⭐その他】',
-            'g:genkai :: 限界ポイントモード。VCに参加し続けて限界ポイントをためます。',
             'g:play [url] :: 指定されたURlを再生します。',
             'g:dis :: 再生を強制的に停止します。',
             '```'
         ])
         await message.channel.send(
             new MessageEmbed()
-                .setTitle('このBOTのリポジトリ / Github')
+                .setTitle('このBOTのリポジトリ / GitHub')
                 .setDescription('このBotのリポジトリを読むと彼女ができる！？')
                 .setURL(url.github)
         )
@@ -94,21 +93,11 @@ bot.on('message', async (message) => {
         const connection = await gennkai_channel.join()
         const stream = ytdl(ytdl.getURLVideoID('https://www.youtube.com/watch?v=KHuO05O2Lb4'), { filter: 'audioonly' })
         await connection.play(stream)
-    } else if(message.content.startsWith(`${prefix}play`) && message.guild) {
-        const url = message.content.split(' ')[1]
-        if (!ytdl.validateURL(url)) return message.reply(config.play_failure_free)
-        const channel = message.member.voice.channel
-        if (!channel) return message.reply('再生フリーモード：<#683939861539192865> などのVCチャンネルに参加してください。また音量にご注意ください。')
-        const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID(url), { filter: 'audioonly' })
-        await message.reply(config.play_free)
-        const dispatcher = connection.play(stream)
-        dispatcher.once('finish', () => {
-            channel.leave()
-        })
-    } else if(message.content.startsWith(`${prefix}dis`)) {
+    }  else if(message.content.startsWith(`${prefix}dis`)) {
         const channel_dis = message.member.voice.channel
         channel_dis.leave()
         await message.reply(config.play_forced_stop)
+    } else {
+        await message.channel.send("そんなコマンドないです。コマンド一覧は\`g:help\`で確認できます。")
     }
 })
