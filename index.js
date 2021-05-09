@@ -40,7 +40,6 @@ bot.on('message', async (message) => {
                 .setTitle('このBOTのリポジトリ / Github')
                 .setDescription('このBotのリポジトリを読むと彼女ができる！？')
                 .setURL('https://github.com/Meru92/GoogleWoman')
-                .addField('Release Notes', `[ここ](https://github.com/Meru92/GoogleWoman/releases/tag/v1.0.2)`, true)
                 .addField('change Logs', `[ここ](https://github.com/Meru92/GoogleWoman/blob/main/changelogs/v1.0.2.md)`, true)
         )
     } else if(message.content.startsWith(`${prefix}gururu`) && message.guild) {
