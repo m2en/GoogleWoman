@@ -1,9 +1,9 @@
 const { Client, MessageEmbed } = require('discord.js')
 const dotenv = require('dotenv')
 const ytdl = require('ytdl-core')
-const video_url = require('resources/video_url.json')
-const url = require('resources/url.json')
-const config = require('config/message.json')
+const video_url = require('./resources/video_url.json')
+const url = require('./resources/url.json')
+const config = require('./config/message.json')
 dotenv.config()
 const token = process.env.TOKEN
 const bot = new Client()
