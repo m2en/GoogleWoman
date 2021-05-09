@@ -14,7 +14,7 @@ bot.login(token)
 
 bot.on('ready', () => {
     console.log(`${bot.user.username}を起動しました。`)
-    bot.user.setActivity("Googleの正しい発音 - v1.0.3", { type: 'LISTENING' })
+    bot.user.setActivity("生徒たちに \"Google\" の正しい発音の教育中..... ")
         .catch(console.error)
 })
 
