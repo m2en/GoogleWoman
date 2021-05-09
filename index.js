@@ -1,6 +1,9 @@
 const { Client, MessageEmbed } = require('discord.js')
 const dotenv = require('dotenv')
 const ytdl = require('ytdl-core')
+const video_url = require('resources/video_url.json')
+const url = require('resources/url.json')
+const config = require('config/message.json')
 dotenv.config()
 const token = process.env.TOKEN
 const bot = new Client()
@@ -39,15 +42,14 @@ bot.on('message', async (message) => {
             new MessageEmbed()
                 .setTitle('このBOTのリポジトリ / Github')
                 .setDescription('このBotのリポジトリを読むと彼女ができる！？')
-                .setURL('https://github.com/Meru92/GoogleWoman')
-                .addField('change Logs', `[ここ](https://github.com/Meru92/GoogleWoman/blob/main/changelogs/v1.0.2.md)`, true)
+                .setURL(url.github)
         )
     } else if(message.content.startsWith(`${prefix}gururu`) && message.guild) {
         const channel = message.member.voice.channel
-        if(!channel) return message.reply('『Googleの正しい発音』を再生するにはまず <#683939861539192865> などのVCチャンネルに参加してください。また音量にご注意ください。')
+        if(!channel) return message.reply(config.play_failure)
         await message.channel.send("**__『Googleの正しい発音』__**を再生します。音量にご注意ください。")
         const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID('https://www.youtube.com/watch?v=QL2Wg3b6g8I'), { filter: 'audioonly' })
+        const stream = ytdl(ytdl.getURLVideoID(video_url.google), { filter: 'audioonly' })
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
@@ -55,36 +57,36 @@ bot.on('message', async (message) => {
         })
     } else if(message.content.startsWith(`${prefix}mura`) && message.guild) {
         const channel = message.member.voice.channel
-        if(!channel) return message.reply('『『バイオハザード　ヴィレッジ』公式イメージソング「俺らこんな村いやだLv.100」』を再生するにはまず <#683939861539192865> などのVCチャンネルに参加してください。また音量にご注意ください。')
+        if(!channel) return message.reply(config.play_failure)
         await message.channel.send("**__『バイオハザード　ヴィレッジ』公式イメージソング「俺らこんな村いやだLv.100」__**を再生します。音量にご注意ください。")
         const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID('https://www.youtube.com/watch?v=_Is8EOl18qk&t=79s'), {filter: 'audioonly'})
+        const stream = ytdl(ytdl.getURLVideoID(video_url.baio), {filter: 'audioonly'})
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
-            message.reply('再生しました。')
+            message.reply(config.play_done)
         })
     } else if(message.content.startsWith(`${prefix}damedane`) && message.guild) {
         const channel = message.member.voice.channel
-        if(!channel) return message.reply('『龍が如く5　ばかみたい full(桐生ver.）』を再生するにはまず <#683939861539192865> などのVCチャンネルに参加してください。また音量にご注意ください。')
+        if(!channel) return message.reply(config.play_failure)
         await message.channel.send("**__『龍が如く5　ばかみたい full(桐生ver.）』__**を再生します。音量にご注意ください。")
         const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID('https://www.youtube.com/watch?v=3zsueuA3Ywo'), { filter: 'audioonly' })
+        const stream = ytdl(ytdl.getURLVideoID(video_url.damenanoyo), { filter: 'audioonly' })
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
-            message.reply('再生しました。')
+            message.reply(config.play_done)
         })
     } else if(message.content.startsWith(`${prefix}ten`) && message.guild) {
         const channel = message.member.voice.channel
-        if(!channel) return message.reply('『この点は出ねぇヨォオｵｵｵ！！！』を再生するにはまず <#683939861539192865> などのVCチャンネルに参加してください。また音量にご注意ください。')
+        if(!channel) return message.reply(config.play_failure)
         await message.channel.send("この点は出ねぇヨォオｵｵｵ！！！この点は出ねぇヨォオｵｵｵ！！！この点は出ねぇヨォオｵｵｵ！！！この点は出ねぇヨォオｵｵｵ！！！")
         const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID('https://www.youtube.com/watch?v=mLosdg6Btuk'), {filter: 'audioonly'})
+        const stream = ytdl(ytdl.getURLVideoID(video_url.ten), {filter: 'audioonly'})
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
-            message.reply('再生しました。')
+            message.reply(config.play_done)
         })
     } else if(message.content.startsWith(`${prefix}gennkai`) && message.guild) {
         const gennkai_channel = bot.channels.cache.get('840681185423130674')
@@ -94,12 +96,12 @@ bot.on('message', async (message) => {
         await connection.play(stream)
     } else if(message.content.startsWith(`${prefix}play`) && message.guild) {
         const url = message.content.split(' ')[1]
-        if (!ytdl.validateURL(url)) return message.reply('そのURLから動画を取得できませんでした。')
+        if (!ytdl.validateURL(url)) return message.reply(config.play_failure_free)
         const channel = message.member.voice.channel
         if (!channel) return message.reply('再生フリーモード：<#683939861539192865> などのVCチャンネルに参加してください。また音量にご注意ください。')
         const connection = await channel.join()
         const stream = ytdl(ytdl.getURLVideoID(url), { filter: 'audioonly' })
-        await message.reply(`再生フリーモードで再生します。`)
+        await message.reply(config.play_free)
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
@@ -107,6 +109,6 @@ bot.on('message', async (message) => {
     } else if(message.content.startsWith(`${prefix}dis`)) {
         const channel_dis = message.member.voice.channel
         channel_dis.leave()
-        await message.reply('再生を強制的に終了しました。')
+        await message.reply(config.play_forced_stop)
     }
 })
