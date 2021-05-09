@@ -29,7 +29,7 @@ bot.on('message', async (message) => {
             'g:help :: これです。',
             'g:gururu :: 『Googleの正しい発音』を再生します。',
             'g:mura :: 『『バイオハザード　ヴィレッジ』公式イメージソング「俺らこんな村いやだLv.100」』を再生します。長いので飽きたら切断してください。',
-            'g:damedane :: 『龍が如く5　ばかみたい full(桐生ver.）』を再生します。曲です。',
+            'g:pepsi :: 『ペプシマンのテーマ　full』を再生します。龍が如くの『ばかみたい』はうるさすぎて僕が限界治安部隊に拘束されそうなのでなくなりました。',
             'g:ten :: この点は出ねぇヨォオｵｵｵ！！！',
             '',
             '【⭐その他】',
@@ -65,12 +65,12 @@ bot.on('message', async (message) => {
             channel.leave()
             message.reply(config.play_done)
         })
-    } else if(message.content.startsWith(`${prefix}damedane`) && message.guild) {
+    } else if(message.content.startsWith(`${prefix}pepsi`) && message.guild) {
         const channel = message.member.voice.channel
         if(!channel) return message.reply(config.play_failure)
-        await message.channel.send("**__『龍が如く5　ばかみたい full(桐生ver.）』__**を再生します。音量にご注意ください。")
+        await message.channel.send("**__『ペプシマンのテーマ　full』__**を再生します。龍が如くの『ばかみたい』はうるさすぎて僕が限界治安部隊に拘束されそうなのでなくなりました。")
         const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID(video_url.damenanoyo), { filter: 'audioonly' })
+        const stream = ytdl(ytdl.getURLVideoID(video_url.pepsi), { filter: 'audioonly' })
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
