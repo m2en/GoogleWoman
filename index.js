@@ -8,12 +8,13 @@ dotenv.config()
 const token = process.env.TOKEN
 const bot = new Client()
 const prefix = 'g:'
+const version_prefix = 'v1.0.5'
 
 bot.login(token)
     .catch(console.error);
 
 bot.on('ready', () => {
-    console.log(`${bot.user.username}を起動しました。`)
+    console.log(`${bot.user.username}を起動しました。実行バージョン： ${version_prefix}`)
     bot.user.setActivity("生徒たちに \"Google\" の正しい発音の教育中..... ")
         .catch(console.error)
 })
@@ -21,83 +22,69 @@ bot.on('ready', () => {
 bot.on('message', async (message) => {
     if(!message.content.startsWith(`${prefix}`)) return;
     if(message.content === `${prefix}help`) {
-        await message.channel.send([
-            '```asciidoc',
-            '= GoogleWoman Help - Ver1.0.3 =',
-            '',
-            '【💿再生】',
-            'g:help :: これです。',
-            'g:gururu :: 『Googleの正しい発音』を再生します。',
-            'g:mura :: 『『バイオハザード　ヴィレッジ』公式イメージソング「俺らこんな村いやだLv.100」』を再生します。長いので飽きたら切断してください。',
-            'g:pepsi :: 『ペプシマンのテーマ　full』を再生します。龍が如くの『ばかみたい』はうるさすぎて僕が限界治安部隊に拘束されそうなのでなくなりました。',
-            'g:ten :: この点は出ねぇヨォオｵｵｵ！！！',
-            '',
-            '【⭐その他】',
-            'g:play [url] :: 指定されたURlを再生します。',
-            'g:dis :: 再生を強制的に停止します。',
-            '```'
-        ])
         await message.channel.send(
             new MessageEmbed()
-                .setTitle('このBOTのリポジトリ / GitHub')
-                .setDescription('このBotのリポジトリを読むと彼女ができる！？')
+                .setTitle('Google Woman')
                 .setURL(url.github)
+                .setAuthor(`${message.author.username}`, `${message.author.avatarURL()}`)
+                .setColor('YELLOW')
+                .setFooter(`${version_prefix}`)
+                .addField('💿｜再生：', [
+                    '```asciidoc',
+                    'g:play :: 『Googleの正しい発音』を再生します。',
+                    'g:free-play [url] :: 指定されたURlを再生します。',
+                    'g:dis :: 再生を強制的に停止します。',
+                    '```',
+                ])
+                .addField('⭐｜その他：', [
+                    '```asciidoc',
+                    'g:help :: ヘルプを返します。',
+                    'g:ping :: pingを返します。',
+                    '```',
+                ])
         )
-    } else if(message.content.startsWith(`${prefix}gururu`) && message.guild) {
+    } else if(message.content.startsWith(`${prefix}play`) && message.guild) {
         const channel = message.member.voice.channel
         if(!channel) return message.reply(config.play_failure)
-        await message.channel.send("**__『Googleの正しい発音』__**を再生します。音量にご注意ください。")
+        await message.channel.send(config.play_start)
         const connection = await channel.join()
         const stream = ytdl(ytdl.getURLVideoID(video_url.google), { filter: 'audioonly' })
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
-            message.reply('再生しました。ぐるる！ <:gururu:840642008305500191>')
+            message.reply(config.play_done)
         })
-    } else if(message.content.startsWith(`${prefix}mura`) && message.guild) {
+    } else if(message.content.startsWith(`${prefix}free-play`)) {
+        const url = message.content.split(' ')[1]
+        if (!ytdl.validateURL(url)) return message.reply(config.play_failure_link)
         const channel = message.member.voice.channel
-        if(!channel) return message.reply(config.play_failure)
-        await message.channel.send("**__『バイオハザード　ヴィレッジ』公式イメージソング「俺らこんな村いやだLv.100」__**を再生します。音量にご注意ください。")
+        if (!channel) return message.reply(config.play_failure_vc)
         const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID(video_url.baio), {filter: 'audioonly'})
+        await message.channel.send(
+            new MessageEmbed()
+                .setTitle(config.play_free)
+                .setURL(url)
+        )
+        const stream = ytdl(ytdl.getURLVideoID(url), { filter: 'audioonly' })
         const dispatcher = connection.play(stream)
         dispatcher.once('finish', () => {
             channel.leave()
             message.reply(config.play_done)
         })
-    } else if(message.content.startsWith(`${prefix}pepsi`) && message.guild) {
-        const channel = message.member.voice.channel
-        if(!channel) return message.reply(config.play_failure)
-        await message.channel.send("**__『ペプシマンのテーマ　full』__**を再生します。龍が如くの『ばかみたい』はうるさすぎて僕が限界治安部隊に拘束されそうなのでなくなりました。")
-        const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID(video_url.pepsi), { filter: 'audioonly' })
-        const dispatcher = connection.play(stream)
-        dispatcher.once('finish', () => {
-            channel.leave()
-            message.reply(config.play_done)
-        })
-    } else if(message.content.startsWith(`${prefix}ten`) && message.guild) {
-        const channel = message.member.voice.channel
-        if(!channel) return message.reply(config.play_failure)
-        await message.channel.send("この点は出ねぇヨォオｵｵｵ！！！この点は出ねぇヨォオｵｵｵ！！！この点は出ねぇヨォオｵｵｵ！！！この点は出ねぇヨォオｵｵｵ！！！")
-        const connection = await channel.join()
-        const stream = ytdl(ytdl.getURLVideoID(video_url.ten), {filter: 'audioonly'})
-        const dispatcher = connection.play(stream)
-        dispatcher.once('finish', () => {
-            channel.leave()
-            message.reply(config.play_done)
-        })
-    } else if(message.content.startsWith(`${prefix}gennkai`) && message.guild) {
-        const gennkai_channel = bot.channels.cache.get('840681185423130674')
-        await message.reply(`**__${bot.user.username} 限界モード__**を行います。このモードは <#840681185423130674> に居座りながら快眠BGMを垂れ流し限界ポイントをためます。やめるときは \`g:dis\`を実行してください。`)
-        const connection = await gennkai_channel.join()
-        const stream = ytdl(ytdl.getURLVideoID('https://www.youtube.com/watch?v=KHuO05O2Lb4'), { filter: 'audioonly' })
-        await connection.play(stream)
-    }  else if(message.content.startsWith(`${prefix}dis`)) {
+    } else if(message.content.startsWith(`${prefix}ping`)) {
+        await message.channel.send('Pong! : ' + `${bot.ws.ping}ms`)
+    } else if(message.content.startsWith(`${prefix}dis`)) {
         const channel_dis = message.member.voice.channel
         channel_dis.leave()
         await message.reply(config.play_forced_stop)
-    } else {
-        await message.channel.send("そんなコマンドないです。コマンド一覧は\`g:help\`で確認できます。")
+    } else if(["Google", "google", "グーグル", "ぐーぐる"].includes(message.content)) {
+        await message.react('840642008305500191')
+        /**
+         * Releaseからソースコードを入手したときはこの Array.prototype.includes は削除してください。
+         * でないとここの4つの文字列がチャンネルに送信されるとDiscordAPIErrorを吐きます。
+         */
+    }
+    else {
+        await message.channel.send(config.command_miss)
     }
 })
